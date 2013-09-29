@@ -74,10 +74,11 @@ class Event(Page, RichText):
 	class Meta:
 		verbose_name = "Event"
 
-class EventContainer (Page):
+class Calendar (Page):
 	hide_children = models.BooleanField(default=True, verbose_name="Hide events in this container from navigation")
 	class Meta:
-		verbose_name = "Event Container"
+                verbose_name = "Calendar"
+                db_table = "mezzanine_events_eventcontainer"
 	
 	def events(self):
 		"""Convenience method for getting at all events in a container, in the right order, from a template."""

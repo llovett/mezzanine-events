@@ -1,6 +1,6 @@
 from mezzanine.pages.models import Page
 from django.http import Http404, HttpResponse
-from .models import Event, EventContainer, _get_current_domain
+from .models import Event, Calendar, _get_current_domain
 from icalendar import Calendar as ICalendar, Event as IEvent
 from datetime import datetime
 from . import __version__
@@ -52,7 +52,7 @@ def icalendar_container(request, slug):
 	except Page.DoesNotExist:
 		raise Http404()
 
-	if not isinstance(page.get_content_model(), EventContainer):
+	if not isinstance(page.get_content_model(), Calendar):
 		raise Http404()
 
 	ical = _make_icalendar()
