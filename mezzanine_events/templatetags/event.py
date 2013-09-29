@@ -1,7 +1,7 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 import re
-from ..models import _get_current_domain, Event, EventContainer
+from ..models import _get_current_domain, Event, Calendar
 from ..lib import get_utc
 from django.utils.http import urlquote as quote
 from mezzanine.conf import settings
@@ -67,7 +67,7 @@ def icalendar_url(obj, proto_param=None):
 		proto = '{}://'.format(proto_param)
 	if isinstance(obj, Event):
 		endfile = 'event.ics'
-	elif isinstance(obj, EventContainer):
+	elif isinstance(obj, Calendar):
 		endfile = 'calendar.ics'
 	else:
 		return obj
