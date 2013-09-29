@@ -17,9 +17,10 @@
 	{{page.event.date}} from {{page.event.start_time}} to {{page.event.end_time}}
 </p>
 
-{% if page.event.location %}
+
 <div class="row-fluid">
-	<div class="span4">
+        {% if page.event.location %}
+	<div class="span6">
 		<b>Address</b>
 		<address>
 			{{page.event.location|linebreaksbr}}<br />
@@ -28,8 +29,16 @@
 			</a>
 		</address>
 	</div>
+        {% endif %}
+        {% if page.event.rsvp %}
+                <div class="span6">
+                        <b>RSVP</b>
+                        <p>
+                                {{page.event.rsvp|linebreaksbr|link_emails}}
+                        </p>
+                </div>
+        {% endif %}
 </div>
-{% endif %}
 
 {{page.event.content|richtext_filter|safe}}
 
