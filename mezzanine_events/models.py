@@ -34,6 +34,11 @@ class Event(Page, RichText):
 	def clean(self):
 		super(Event, self).clean()
 
+                if self.parent is None or not isinstance(
+                                self.parent.get_content_model(),
+                                Calendar):
+                        raise ValidationError("This event must belong to a Calendar.")
+
 		if self.lat and not self.lon:
 			raise ValidationError("Longitude required if specifying latitude.")
 
@@ -54,23 +59,23 @@ class Event(Page, RichText):
 			self.mappable_location = location
 			self.lat = lat
 			self.lon = lon
-		
+
 	def save(self, *args, **kwargs):
 		# determine whether the page needs to be hidden
 		# this has to be done here because we don't have access to the parent in clean()
 		hide_page = False
-				
+
 		if self.parent is not None:
-			hide_page = isinstance(self.parent.get_content_model(), EventContainer) and self.parent.get_content_model().hide_children
-		
+			hide_page = isinstance(self.parent.get_content_model(), Calendar) and self.parent.get_content_model().hide_children
+
 		if hide_page:
 			# older versions
 			self.in_navigation = False
 			# newer versions
 			self.in_menus = ""
-		
+
 		super(Event, self).save(*args, **kwargs)
-	
+
 	class Meta:
 		verbose_name = "Event"
 
@@ -79,7 +84,7 @@ class Calendar (Page):
 	class Meta:
                 verbose_name = "Calendar"
                 db_table = "mezzanine_events_eventcontainer"
-	
+
 	def events(self):
 		"""Convenience method for getting at all events in a container, in the right order, from a template."""
 		return self.children.published().order_by('_order')
