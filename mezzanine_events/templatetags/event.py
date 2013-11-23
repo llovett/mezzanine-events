@@ -53,11 +53,24 @@ class GoogleStaticMapNode (template.Node):
 		height = self.height
 		zoom = self.zoom
 		marker = quote('{:.6},{:.6}'.format(event.lat, event.lon))
+                maploc = event.mappable_location
 		if settings.MZEVENTS_HIDPI_STATIC_MAPS:
 			scale = 2
 		else:
 			scale = 1
-		return "<img src='http://maps.googleapis.com/maps/api/staticmap?size={width}x{height}&scale={scale}&format=png&markers={marker}&sensor=false&zoom={zoom}' width='{width}' height='{height}' />".format(**locals())
+                if len(maploc) > 0:
+                        return ("<a href='http://maps.google.com/maps?q={maploc}' "
+                                "target='_blank'>"
+                                "<img src='http://maps.googleapis.com/maps/api/staticmap?"
+                                "size={width}x{height}&scale={scale}&format=png&markers={marker}"
+                                "&sensor=false&zoom={zoom}' width='{width}' "
+                                "height='{height}' /></a><br/>"
+                                "<a href='https://maps.google.com/maps?saddr=current+location"
+                                "&daddr={maploc}'>Get Directions</a>").format(**locals())
+                return ("<img src='http://maps.googleapis.com/maps/api/staticmap?"
+                        "size={width}x{height}&scale={scale}&format=png&markers={marker}"
+                        "&sensor=false&zoom={zoom}' width='{width}' "
+                        "height='{height}' />").format(**locals())
 
 @register.filter(is_safe=True)
 def icalendar_url(obj, proto_param=None):
