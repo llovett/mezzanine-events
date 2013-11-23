@@ -42,6 +42,8 @@
 
 {{page.event.content|richtext_filter|safe}}
 
-{% google_static_map page.event 670 150 10 %}
+{% if page.event.lat and page.event.lon %}
+  {% google_static_map page.event 670 150 10 %}
+{% endif %}
 
 {% endblock %}
