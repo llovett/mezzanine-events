@@ -17,6 +17,7 @@ class EventAdminForm(ModelForm):
             calendar.initial = all_calendars[0].id
 
         # Show in the side bar, but not other places
+        # The initial value is dependent on PAGE_MENU_TEMPLATES
         self.fields['in_menus'].initial = [2]
 
     fieldsets = (
